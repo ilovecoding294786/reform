@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reform", "Reform.csproj", "{1F75932F-516E-4216-8EEB-70DC478619F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReformTest", "ReformTest\ReformTest.csproj", "{AF8DBBB0-F4CA-4DBC-83C7-0A706B38B971}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1F75932F-516E-4216-8EEB-70DC478619F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F75932F-516E-4216-8EEB-70DC478619F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F75932F-516E-4216-8EEB-70DC478619F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F75932F-516E-4216-8EEB-70DC478619F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF8DBBB0-F4CA-4DBC-83C7-0A706B38B971}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF8DBBB0-F4CA-4DBC-83C7-0A706B38B971}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF8DBBB0-F4CA-4DBC-83C7-0A706B38B971}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF8DBBB0-F4CA-4DBC-83C7-0A706B38B971}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

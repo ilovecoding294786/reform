@@ -1,0 +1,29 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Reform", "Reform.csproj", "{1F75932F-516E-4216-8EEB-70DC478619F3}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReformTest", "ReformTest\ReformTest.csproj", "{75A8338B-EED7-4572-A454-17B975BCFB95}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{1F75932F-516E-4216-8EEB-70DC478619F3}.Debug.ActiveCfg = Debug|.NET
+		{1F75932F-516E-4216-8EEB-70DC478619F3}.Debug.Build.0 = Debug|.NET
+		{1F75932F-516E-4216-8EEB-70DC478619F3}.Release.ActiveCfg = Release|.NET
+		{1F75932F-516E-4216-8EEB-70DC478619F3}.Release.Build.0 = Release|.NET
+		{75A8338B-EED7-4572-A454-17B975BCFB95}.Debug.ActiveCfg = Debug|.NET
+		{75A8338B-EED7-4572-A454-17B975BCFB95}.Debug.Build.0 = Debug|.NET
+		{75A8338B-EED7-4572-A454-17B975BCFB95}.Release.ActiveCfg = Release|.NET
+		{75A8338B-EED7-4572-A454-17B975BCFB95}.Release.Build.0 = Release|.NET
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
