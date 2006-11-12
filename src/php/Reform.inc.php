@@ -25,11 +25,28 @@
  * Authors:
  *   Michael Eddington (meddington@gmail.com)
  *
- * $Id: Reform.inc.php,v 1.3 2006/11/06 06:03:20 meddingt Exp $
+ * $Id$
  */
 
 class Reform
 {
+	// mb_internal_encoding();
+	function unichr($u)
+	{
+		return mb_convert_encoding(pack("N",$u), mb_internal_encoding(), 'UCS-4BE');
+	}
+	
+	function uniord($u)
+	{
+		$c = unpack("N", mb_convert_encoding($u, 'UCS-4BE', mb_internal_encoding()));
+		return $c[1];
+	}
+	
+	function unicharat($str, $cnt)
+	{
+		return mb_substr($str, $cnt, 1);
+	}
+	
 	function HtmlEncode($str, $default = '')
 	{
 		if(empty($str))
@@ -40,20 +57,20 @@ class Reform
 	 	settype($str, 'string');
 		
 		$out = '';
-		$len = strlen($str);
+		$len = mb_strlen($str);
 		
 		// Allow: a-z A-Z 0-9 SPACE , .
 		// Allow (dec): 97-122 65-90 48-57 32 44 46
 		
 		for($cnt = 0; $cnt < $len; $cnt++)
 		{
-			$c = ord($str{$cnt});
+			$c = Reform::uniord(Reform::unicharat($str, $cnt));
 			if( ($c >= 97 && $c <= 122) ||
 				($c >= 65 && $c <= 90 ) ||
 				($c >= 48 && $c <= 57 ) ||
 				$c == 32 || $c == 44 || $c == 46 )
 			{
-				$out .= $str{$cnt};
+				$out .= Reform::unicharat($str, $cnt);
 			}
 			else
 			{
@@ -74,19 +91,19 @@ class Reform
 	 	settype($str, 'string');
 		
 		$out = '';
-		$len = strlen($str);
+		$len = mb_strlen($str);
 		
 		// Allow: a-z A-Z 0-9
 		// Allow (dec): 97-122 65-90 48-57
 		
 		for($cnt = 0; $cnt < $len; $cnt++)
 		{
-			$c = ord($str{$cnt});
+			$c = Reform::uniord(Reform::unicharat($str, $cnt));
 			if( ($c >= 97 && $c <= 122) ||
 				($c >= 65 && $c <= 90 ) ||
 				($c >= 48 && $c <= 57 ) )
 			{
-				$out .= $str{$cnt};
+				$out .= Reform::unicharat($str, $cnt);
 			}
 			else
 			{
@@ -107,20 +124,20 @@ class Reform
 	 	settype($str, 'string');
 		
 		$out = '';
-		$len = strlen($str);
+		$len = mb_strlen($str);
 		
 		// Allow: a-z A-Z 0-9 SPACE , .
 		// Allow (dec): 97-122 65-90 48-57 32 44 46
 		
 		for($cnt = 0; $cnt < $len; $cnt++)
 		{
-			$c = ord($str{$cnt});
+			$c = Reform::uniord(Reform::unicharat($str, $cnt));
 			if( ($c >= 97 && $c <= 122) ||
 				($c >= 65 && $c <= 90 ) ||
 				($c >= 48 && $c <= 57 ) ||
 				$c == 32 || $c == 44 || $c == 46 )
 			{
-				$out .= $str{$cnt};
+				$out .= Reform::unicharat($str, $cnt);
 			}
 			else
 			{
@@ -141,19 +158,19 @@ class Reform
 	 	settype($str, 'string');
 		
 		$out = '';
-		$len = strlen($str);
+		$len = mb_strlen($str);
 		
 		// Allow: a-z A-Z 0-9
 		// Allow (dec): 97-122 65-90 48-57
 		
 		for($cnt = 0; $cnt < $len; $cnt++)
 		{
-			$c = ord($str{$cnt});
+			$c = Reform::uniord(Reform::unicharat($str, $cnt));
 			if( ($c >= 97 && $c <= 122) ||
 				($c >= 65 && $c <= 90 ) ||
 				($c >= 48 && $c <= 57 ) )
 			{
-				$out .= $str{$cnt};
+				$out .= Reform::unicharat($str, $cnt);
 			}
 			else
 			{
@@ -179,20 +196,20 @@ class Reform
 	 	settype($str, 'string');
 		
 		$out = "'";
-		$len = strlen($str);
+		$len = mb_strlen($str);
 		
 		// Allow: a-z A-Z 0-9 SPACE , .
 		// Allow (dec): 97-122 65-90 48-57 32 44 46
 		
 		for($cnt = 0; $cnt < $len; $cnt++)
 		{
-			$c = ord($str{$cnt});
+			$c = Reform::uniord(Reform::unicharat($str, $cnt));
 			if( ($c >= 97 && $c <= 122) ||
 				($c >= 65 && $c <= 90 ) ||
 				($c >= 48 && $c <= 57 ) ||
 				$c == 32 || $c == 44 || $c == 46 )
 			{
-				$out .= $str{$cnt};
+				$out .= Reform::unicharat($str, $cnt);
 			}
 			elseif( $c <= 127 )
 			{
@@ -223,14 +240,14 @@ class Reform
 		
 		$out = '';
 		$inStr = false;
-		$len = strlen($str);
+		$len = mb_strlen($str);
 		
 		// Allow: a-z A-Z 0-9 SPACE , .
 		// Allow (dec): 97-122 65-90 48-57 32 44 46
 		
 		for($cnt = 0; $cnt < $len; $cnt++)
 		{
-			$c = ord($str{$cnt});
+			$c = Reform::uniord(Reform::unicharat($str, $cnt));
 			if( ($c >= 97 && $c <= 122) ||
 				($c >= 65 && $c <= 90 ) ||
 				($c >= 48 && $c <= 57 ) ||
@@ -242,7 +259,7 @@ class Reform
 					$out .= '&"';
 				}
 				
-				$out .= $str{$cnt};
+				$out .= Reform::unicharat($str, $cnt);
 			}
 			else
 			{

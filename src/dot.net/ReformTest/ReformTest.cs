@@ -23,7 +23,7 @@
  * Authors:
  *   Michael Eddington (meddington@phed.org)
  *
- * $Id: ReformTest.cs,v 1.2 2006/11/06 06:03:29 meddingt Exp $
+ * $Id$
  */
 
 using System;
