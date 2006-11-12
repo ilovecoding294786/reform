@@ -1,0 +1,15 @@
+
+$Id$
+
+All of the Reform implementations now have xUnit test cases.  To run these
+test cases you will need a copy of the xUnit for each specific language:
+
+ - ASP:
+ - PHP: PHPUnit (http://www.phpunit.de/)
+ - .NET: NUnit (http://www.nunit.org/)
+ - Java: JUnit (http://junit.org/index.htm)
+ - Python: PyUnit (included, just say "python reform.py")
+ - Perl: Test-Class
+ - Ruby: 
+ - JavaScrpit: JsUnit (http://www.jsunit.net/)
+
