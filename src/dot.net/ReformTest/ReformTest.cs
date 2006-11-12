@@ -29,9 +29,9 @@
 using System;
 using System.Text;
 using NUnit.Framework;
-using PhedOrg.Reform;
+using Owasp.Reform;
 
-namespace PhedOrg.Reform.Test
+namespace Owasp.Reform.Test
 {
 	[TestFixture]
 	public class ReformTest

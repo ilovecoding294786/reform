@@ -27,7 +27,7 @@
  * $Id: Reform.java,v 1.2 2006/11/05 10:13:39 meddingt Exp $
  */
 
-package org.phed.reform;
+package org.owasp.reform;
 
 public class Reform
 {

@@ -26,12 +26,12 @@
  * $Id: ReformTest.java,v 1.1 2006/11/05 10:13:39 meddingt Exp $
  */
 
-package org.phed.reform.test;
+package org.owasp.reform.test;
 
 import junit.framework.JUnit4TestAdapter;
 import org.junit.Assert.*;
 import org.junit.*;
-import org.phed.reform.Reform;
+import org.owasp.reform.Reform;
 
 public class ReformTest
 {

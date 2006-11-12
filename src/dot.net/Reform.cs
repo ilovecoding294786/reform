@@ -30,7 +30,7 @@
 using System;
 using System.Text;
 
-namespace PhedOrg.Reform
+namespace Owasp.Reform
 {
 	public sealed class Reform
 	{
