@@ -100,6 +100,19 @@ function XmlAttributeEncode($str, $default)
 	return HtmlAttributeEncode($str, $default);
 }
 
+var hD="0123456789ABCDEF";
+function d2h(d)
+{
+	var h = hD.substr(d&15,1);
+	while(d>15)
+	{
+		d>>=4;
+		h=hD.substr(d&15,1)+h;
+	}
+	
+	return h;
+}
+
 function JsString($str, $default)
 {
 	if($str == null || $str.length == 0)
@@ -130,7 +143,7 @@ function JsString($str, $default)
 		}
 		else if( $c <= 127 )
 		{
-			$hex = new String(parseInt($c, 16));
+			$hex = d2h($c);
 			if( $hex.length < 2 )
 			{
 				'0' + $hex;
@@ -140,7 +153,7 @@ function JsString($str, $default)
 		}
 		else
 		{
-			$hex = new String(parseInt($c, 16));
+			$hex = d2h($c);
 			while( $hex.length < 4 )
 			{
 				$hex = '0' + $hex;

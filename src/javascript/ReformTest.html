@@ -1,0 +1,498 @@
+<html>
+<head>
+<title>Test Page for Reform</title>
+<script language="javascript" src="jsUnitCore.js"></script>
+<script language="javascript" src="Reform.js"></script>
+</head>
+<body>
+<script language="javascript">
+	function testHtmlEncode()
+	{
+		// Non encoded characters
+		assertEquals("Non encoding chars", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.",
+			HtmlEncode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."));
+		// Usual suspects
+		assertEquals("Usual suspects", "&#60;&#62;&#38;&#34;",
+			HtmlEncode("<>&\""));
+		// Other characters
+		assertEquals("Punctuation", "&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			HtmlEncode("`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+			
+			assertEquals("Unicode characters to 6000 ["+i+"]", "&#" + i + ';',
+				HtmlEncode(String.fromCharCode(i)));
+		}
+		
+		assertEquals("Unicode characters to 6000", encodedStr,
+			HtmlEncode(toEncode));
+	}
+	
+	function testHtmlEncodeDefault()
+	{
+		// Usual stuff
+		assertEquals("Checking default", "default", 
+			HtmlEncode(null, "default"));
+	
+		// Non encoded characters
+		assertEquals("Non encoding chars via default", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.",
+			HtmlEncode(null, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."));
+		// Usual suspects
+		assertEquals("Usual suspects via default", "&#60;&#62;&#38;&#34;",
+			HtmlEncode(null, "<>&\""));
+		// Other characters
+		assertEquals("Punctuation via default", "&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			HtmlEncode(null, "`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000 via default", encodedStr,
+			HtmlEncode(null, toEncode));
+		
+		// The following are sanity checks
+	
+		// Non encoded characters
+		assertEquals("Non encoding chars", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.",
+			HtmlEncode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.", "default"));
+		// Usual suspects
+		assertEquals("Usual suspects", "&#60;&#62;&#38;&#34;",
+			HtmlEncode("<>&\"", "default"));
+		// Other characters
+		assertEquals("Punctuation", "&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			HtmlEncode("`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000", encodedStr,
+			HtmlEncode(toEncode, "default"));
+	}
+	
+	function testHtmlAttributeEncode()
+	{
+		// Non encoded characters
+		assertEquals("Non encoding chars", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321",
+			HtmlAttributeEncode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321"));
+		// Usual suspects
+		assertEquals("Usual suspects", "&#60;&#62;&#38;&#34;",
+			HtmlAttributeEncode("<>&\""));
+		// Other characters
+		assertEquals("Punctuation", "&#32;&#44;&#46;&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			HtmlAttributeEncode(" ,.`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000", encodedStr,
+			HtmlAttributeEncode(toEncode));
+	}
+	
+	function testHtmlAttributeEncodeDefault()
+	{
+		// Usual stuff
+		assertEquals("Checking default", "default",
+			HtmlAttributeEncode(null, "default"));
+	
+		// Non encoded characters
+		assertEquals("Non encoding chars via default", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321",
+			HtmlAttributeEncode(null, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321"));
+		// Usual suspects
+		assertEquals("Usual suspects via default", "&#60;&#62;&#38;&#34;",
+			HtmlAttributeEncode(null, "<>&\""));
+		// Other characters
+		assertEquals("Punctuation via default", "&#32;&#44;&#46;&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			HtmlAttributeEncode(null, " ,.`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000 via default", encodedStr,
+			HtmlAttributeEncode(null, toEncode));
+	
+		// The following are sanity checks
+	
+		// Non encoded characters
+		assertEquals("Non encoding chars", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321",
+			HtmlAttributeEncode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321", "default"));
+		// Usual suspects
+		assertEquals("Usual suspects", "&#60;&#62;&#38;&#34;",
+			HtmlAttributeEncode("<>&\"", "default"));
+		// Other characters
+		assertEquals("Punctuation", "&#32;&#44;&#46;&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			HtmlAttributeEncode(" ,.`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000", encodedStr,
+			HtmlAttributeEncode(toEncode, "default"));
+	}
+
+	function testXmlEncode()
+	{
+		// Non encoded characters
+		assertEquals("Non encoding chars", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.",
+			XmlEncode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."));
+		// Usual suspects
+		assertEquals("Usual suspects", "&#60;&#62;&#38;&#34;",
+			XmlEncode("<>&\""));
+		// Other characters
+		assertEquals("Punctuation", "&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			XmlEncode("`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000", encodedStr,
+			XmlEncode(toEncode));
+	}
+	
+	function testXmlEncodeDefault()
+	{
+		assertEquals("Null for both parameters", "",
+			XmlEncode(null, null));
+		// Usual stuff
+		assertEquals("Checking default", "default",
+			XmlEncode(null, "default"));
+	
+		// Non encoded characters
+		assertEquals("Non encoding chars via default", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.",
+			XmlEncode(null, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."));
+		// Usual suspects
+		assertEquals("Usual suspects via default", "&#60;&#62;&#38;&#34;",
+			XmlEncode(null, "<>&\""));
+		// Other characters
+		assertEquals("Punctuation via default", "&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			XmlEncode(null, "`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000 via default", encodedStr,
+			XmlEncode(null, toEncode));
+	
+		// The following are sanity checks
+	
+		// Non encoded characters
+		assertEquals("Non encoding chars", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.",
+			XmlEncode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.", "default"));
+		// Usual suspects
+		assertEquals("Usual suspects", "&#60;&#62;&#38;&#34;",
+			XmlEncode("<>&\"", "default"));
+		// Other characters
+		assertEquals("Punctuation", "&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			XmlEncode("`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000", encodedStr,
+			XmlEncode(toEncode, "default"));
+	}
+	
+	function testXmlAttributeEncode()
+	{
+		// Non encoded characters
+		assertEquals("Non encoding chars", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321",
+			XmlAttributeEncode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321"));
+		// Usual suspects
+		assertEquals("Usual suspects", "&#60;&#62;&#38;&#34;",
+			XmlAttributeEncode("<>&\""));
+		// Other characters
+		assertEquals("Punctuation", "&#32;&#44;&#46;&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			XmlAttributeEncode(" ,.`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000", encodedStr,
+			XmlAttributeEncode(toEncode));
+	}
+	
+	function testXmlAttributeEncodeDefault()
+	{
+		assertEquals("Null for both parameters", "",
+			XmlAttributeEncode(null, null));
+		// Usual stuff
+		assertEquals("Checking default", "default",
+			XmlAttributeEncode(null, "default"));
+	
+		// Non encoded characters
+		assertEquals("Non encoding chars via default", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321",
+			XmlAttributeEncode(null, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321"));
+		// Usual suspects
+		assertEquals("Usual suspects via default", "&#60;&#62;&#38;&#34;",
+			XmlAttributeEncode(null, "<>&\""));
+		// Other characters
+		assertEquals("Punctuation via default", "&#32;&#44;&#46;&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			XmlAttributeEncode(null, " ,.`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000 via default", encodedStr,
+			XmlAttributeEncode(null, toEncode));
+	
+		// The following are sanity checks
+	
+		// Non encoded characters
+		assertEquals("Non encoding chars", "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321",
+			XmlAttributeEncode("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321", "default"));
+		// Usual suspects
+		assertEquals("Usual suspects", "&#60;&#62;&#38;&#34;",
+			XmlAttributeEncode("<>&\"", "default"));
+		// Other characters
+		assertEquals("Punctuation", "&#32;&#44;&#46;&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
+			XmlAttributeEncode(" ,.`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 127; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&#" + i + ';';
+		}
+		assertEquals("Unicode characters to 6000", encodedStr,
+			XmlAttributeEncode(toEncode, "default"));
+	}
+	
+	var hD="0123456789ABCDEF";
+	function d2h(d)
+	{
+		var h = hD.substr(d&15,1);
+		
+		while( d > 15 )
+		{
+			d >>= 4;
+			h = hD.substr(d & 15, 1) + h;
+		}
+		
+		return h;
+	}
+
+	function bin2hex(i)
+	{
+		str = d2h(i);
+		for(; str.length < 4; )
+		{
+			str = '0' + str;
+		}
+		return str;
+		
+	}
+	
+	function testJsString()
+	{
+		// Non encoded characters
+		assertEquals("Non encoding chars", "'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.'",
+			JsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."));
+		// Usual suspects
+		assertEquals("Usual suspects", "'\\x3C\\x3E\\x26\\x22\\x5C\\x27'",
+			JsString("<>&\"\\'"));
+		// Other characters
+		assertEquals("Punctuation", "'\\x60\\x7E\\x21\\x40\\x23\\x24\\x25\\x5E\\x26\\x2A\\x28\\x29\\x5F\\x2B\\x3D\\x2D\\x7B\\x7D\\x7C\\x5C\\x5D\\x5B\\x3A\\x3B\\x27\\x2F\\x3F\\x3E\\x3C'",
+			JsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		encodedStr += '\'';
+		for (i = 128; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "\\u" + bin2hex(i);
+		}
+		encodedStr += '\'';
+		assertEquals("Unicode characters to 6000", encodedStr,
+			JsString(toEncode));
+	}
+	
+	function testJsStringDefault()
+	{
+		assertEquals("Null for both parameters", "\'\'",
+			JsString(null, null));
+		// Usual stuff
+		assertEquals("Checking default", "'default'",
+			JsString(null, "default"));
+	
+		// Non encoded characters
+		assertEquals("Non encoding chars via default", "'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.'",
+			JsString(null, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."));
+		// Usual suspects
+		assertEquals("Usual suspects via default", "'\\x3C\\x3E\\x26\\x22\\x5C\\x27'",
+			JsString(null, "<>&\"\\'"));
+		// Other characters
+		assertEquals("Punctuation via default", "'\\x60\\x7E\\x21\\x40\\x23\\x24\\x25\\x5E\\x26\\x2A\\x28\\x29\\x5F\\x2B\\x3D\\x2D\\x7B\\x7D\\x7C\\x5C\\x5D\\x5B\\x3A\\x3B\\x27\\x2F\\x3F\\x3E\\x3C'",
+			JsString(null, "`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		encodedStr += '\'';
+		for (i = 128; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "\\u" + bin2hex(i);
+		}
+		encodedStr += '\'';
+		assertEquals("Unicode characters to 6000 via default", encodedStr,
+			JsString(null, toEncode));
+	
+		// The following are sanity checks
+	
+		// Non encoded characters
+		assertEquals("Non encoding chars", "'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.'",
+			JsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.", "default"));
+		// Usual suspects
+		assertEquals("Usual suspects", "'\\x3C\\x3E\\x26\\x22\\x5C\\x27'",
+			JsString("<>&\"\\'", "default"));
+		// Other characters
+		assertEquals("Punctuation", "'\\x60\\x7E\\x21\\x40\\x23\\x24\\x25\\x5E\\x26\\x2A\\x28\\x29\\x5F\\x2B\\x3D\\x2D\\x7B\\x7D\\x7C\\x5C\\x5D\\x5B\\x3A\\x3B\\x27\\x2F\\x3F\\x3E\\x3C'",
+			JsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		encodedStr += '\'';
+		for (i = 128; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "\\u" + bin2hex(i);
+		}
+		encodedStr += '\'';
+		assertEquals("Unicode characters to 6000", encodedStr,
+			JsString(toEncode, "default"));
+	}
+
+	function testVbsString()
+	{
+		assertEquals("\"abc\"&wchr(60)",
+			VbsString("abc<"));
+		assertEquals("wchr(60)&\"abc\"",
+			VbsString("<abc"));
+		// Non encoded characters
+		assertEquals("Non encoding chars", "\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
+			VbsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."));
+		// Usual suspects
+		assertEquals("Usual suspects", "wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+			VbsString("<>&\"\\'"));
+		// Other characters
+		assertEquals("Punctuation", "wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+			VbsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 128; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&wchr("+i+")";
+		}
+		encodedStr = encodedStr.substr(1); // remove &
+	
+		assertEquals("Unicode characters to 6000", encodedStr,
+			VbsString(toEncode));
+	}
+	
+	function testVbsStringDefault()
+	{
+		assertEquals("Null for both parameters", "\"\"", 
+			VbsString(null, null));
+		assertEquals("\"abc\"&wchr(60)",
+			VbsString(null, "abc<"));
+		assertEquals("wchr(60)&\"abc\"",
+			VbsString(null, "<abc"));
+		// Usual stuff
+		assertEquals("Checking default", "\"default\"",
+			VbsString(null, "default"));
+		
+		// Non encoded characters
+		assertEquals("Non encoding chars via default", "\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
+			VbsString(null, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."));
+		// Usual suspects
+		assertEquals("Usual suspects via default", "wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+			VbsString(null, "<>&\"\\'"));
+		// Other characters
+		assertEquals("Punctuation via default", "wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+			VbsString(null, "`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 128; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&wchr("+i+")";
+		}
+		encodedStr = encodedStr.substr(1); // remove &
+		assertEquals("Unicode characters to 6000 via default", encodedStr,
+			VbsString(null, toEncode));
+		
+		// The following are sanity checks
+		
+		// Non encoded characters
+		assertEquals("Non encoding chars", "\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
+			VbsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.", "default"));
+		// Usual suspects
+		assertEquals("Usual suspects", "wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+			VbsString("<>&\"\\'", "default"));
+		// Other characters
+		assertEquals("Punctuation", "wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+			VbsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"));
+		// Unicode characters
+		toEncode = '';
+		encodedStr = '';
+		for (i = 128; i < 6000; i++)
+		{
+			toEncode += String.fromCharCode(i);
+			encodedStr += "&wchr("+i+")";
+		}
+		encodedStr = encodedStr.substr(1); // remove &
+		assertEquals("Unicode characters to 6000", encodedStr,
+			VbsString(toEncode, "default"));
+	}
+
+</script>
+</body>
+</html>
