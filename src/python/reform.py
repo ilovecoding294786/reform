@@ -164,10 +164,10 @@ def VbsString(strInput, default=''):
 			out += char
 		else:
 			if inStr == 0:
-				out += "&wchr(%d)" % c
+				out += "&chrw(%d)" % c
 			else:
 				inStr = 0
-				out += "\"&wchr(%d)" % c
+				out += "\"&chrw(%d)" % c
 		
 	if inStr == 1:
 		out += '"'
@@ -526,25 +526,25 @@ class ReformUnittest(unittest.TestCase):
 
 
 	def testVbsString(self):
-		self.failUnlessEqual("\"abc\"&wchr(60)",
+		self.failUnlessEqual("\"abc\"&chrw(60)",
 			Reform.VbsString("abc<"))
-		self.failUnlessEqual("wchr(60)&\"abc\"",
+		self.failUnlessEqual("chrw(60)&\"abc\"",
 			Reform.VbsString("<abc"))
 		# Non encoded characters
 		self.failUnlessEqual("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 			Reform.VbsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."), "Non encoding chars")
 		# Usual suspects
-		self.failUnlessEqual("wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+		self.failUnlessEqual("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 			Reform.VbsString("<>&\"\\'"), "Usual suspects")
 		# Other characters
-		self.failUnlessEqual("wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+		self.failUnlessEqual("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 			Reform.VbsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><"), "Punctuation")
 		# Unicode characters
 		toEncode = u''
 		encodedStr = ''
 		for i in range(127, 6000):
 			toEncode += unichr(i)
-			encodedStr += "&wchr(%d)" % i
+			encodedStr += "&chrw(%d)" % i
 
 		encodedStr = encodedStr[1:] # remove &
 
@@ -556,9 +556,9 @@ class ReformUnittest(unittest.TestCase):
 	def testVbsStringDefault(self):
 		self.failUnlessEqual("\"\"", 
 			Reform.VbsString(None, None), "None for both parameters")
-		self.failUnlessEqual("\"abc\"&wchr(60)",
+		self.failUnlessEqual("\"abc\"&chrw(60)",
 			Reform.VbsString(None, "abc<"))
-		self.failUnlessEqual("wchr(60)&\"abc\"",
+		self.failUnlessEqual("chrw(60)&\"abc\"",
 			Reform.VbsString(None, "<abc"))
 		# Usual stuff
 		self.failUnlessEqual("\"default\"",
@@ -568,17 +568,17 @@ class ReformUnittest(unittest.TestCase):
 		self.failUnlessEqual("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 			Reform.VbsString(None, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."), "Non encoding chars via default")
 		# Usual suspects
-		self.failUnlessEqual("wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+		self.failUnlessEqual("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 			Reform.VbsString(None, "<>&\"\\'"), "Usual suspects via default")
 		# Other characters
-		self.failUnlessEqual("wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+		self.failUnlessEqual("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 			Reform.VbsString(None, "`~!@#$%^&*()_+=-{}|\\][:;'/?><"), "Punctuation via default")
 		# Unicode characters
 		toEncode = u''
 		encodedStr = ''
 		for i in range(127, 6000):
 			toEncode += unichr(i)
-			encodedStr += "&wchr(%d)" % i
+			encodedStr += "&chrw(%d)" % i
 
 		encodedStr = encodedStr[1:] # remove &
 		self.failUnlessEqual(encodedStr,
@@ -590,17 +590,17 @@ class ReformUnittest(unittest.TestCase):
 		self.failUnlessEqual("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 			Reform.VbsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.", "default"), "Non encoding chars")
 		# Usual suspects
-		self.failUnlessEqual("wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+		self.failUnlessEqual("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 			Reform.VbsString("<>&\"\\'", "default"), "Usual suspects")
 		# Other characters
-		self.failUnlessEqual("wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+		self.failUnlessEqual("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 			Reform.VbsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"), "Punctuation")
 		# Unicode characters
 		toEncode = u''
 		encodedStr = ''
 		for i in range(127, 6000):
 			toEncode += unichr(i)
-			encodedStr += "&wchr(%d)" % i
+			encodedStr += "&chrw(%d)" % i
 
 		encodedStr = encodedStr[1:] # remove &
 		self.failUnlessEqual(encodedStr,

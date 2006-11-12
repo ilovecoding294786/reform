@@ -376,11 +376,11 @@ namespace PhedOrg.Reform
 				{
 					if(!inStr)
 					{
-						outBuff.Append("&wchr(").Append((int)c).Append(')');
+						outBuff.Append("&chrw(").Append((int)c).Append(')');
 					}
 					else
 					{
-						outBuff.Append("\"&wchr(").Append((int)c).Append(')');
+						outBuff.Append("\"&chrw(").Append((int)c).Append(')');
 						inStr = false;
 					}
 				}

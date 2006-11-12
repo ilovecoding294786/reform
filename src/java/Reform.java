@@ -218,11 +218,11 @@ public class Reform
 			{
 				if(!inStr)
 				{
-					out.append("&wchr(").append((int)c).append(')');
+					out.append("&chrw(").append((int)c).append(')');
 				}
 				else
 				{
-					out.append("\"&wchr(").append((int)c).append(')');
+					out.append("\"&chrw(").append((int)c).append(')');
 					inStr = false;
 				}
 			}

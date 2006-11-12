@@ -136,10 +136,10 @@ def VbsString(str, default=''):
 			out += char
 		else:
 			if inStr == 0:
-				out += "&wchr(%d)" % c
+				out += "&chrw(%d)" % c
 			else:
 				inStr = 0
-				out += "\"&wchr(%d)" % c
+				out += "\"&chrw(%d)" % c
 		
 	if inStr == 1:
 		out += '"'

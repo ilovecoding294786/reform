@@ -437,18 +437,18 @@ public class ReformTest
 	
 	@Test public void VbsString()
 	{
-		Assert.assertEquals("\"abc\"&wchr(60)",
+		Assert.assertEquals("\"abc\"&chrw(60)",
 			Reform.VbsString("abc<"));
-		Assert.assertEquals("wchr(60)&\"abc\"",
+		Assert.assertEquals("chrw(60)&\"abc\"",
 			Reform.VbsString("<abc"));
 		// Non encoded characters
 		Assert.assertEquals("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 			Reform.VbsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."));
 		// Usual suspects
-		Assert.assertEquals("wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+		Assert.assertEquals("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 			Reform.VbsString("<>&\"\\'"));
 		// Other characters
-		Assert.assertEquals("wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+		Assert.assertEquals("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 			Reform.VbsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
 		// Unicode characters
 		StringBuffer toEncode = new StringBuffer(6000);
@@ -456,7 +456,7 @@ public class ReformTest
 		for (int i = 128; i < 6000; i++)
 		{
 			toEncode.append((char)i);
-			encodedStr.append("&wchr(").append(i).append(')');
+			encodedStr.append("&chrw(").append(i).append(')');
 		}
 		encodedStr.delete(0, 1); // delete &
 
@@ -468,9 +468,9 @@ public class ReformTest
 	{
 		Assert.assertEquals("\"\"", 
 			Reform.VbsString(null, null));
-		Assert.assertEquals("\"abc\"&wchr(60)",
+		Assert.assertEquals("\"abc\"&chrw(60)",
 			Reform.VbsString(null, "abc<"));
-		Assert.assertEquals("wchr(60)&\"abc\"",
+		Assert.assertEquals("chrw(60)&\"abc\"",
 			Reform.VbsString(null, "<abc"));
 		// Usual stuff
 		Assert.assertEquals("\"default\"",
@@ -480,10 +480,10 @@ public class ReformTest
 		Assert.assertEquals("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 			Reform.VbsString(null, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."));
 		// Usual suspects
-		Assert.assertEquals("wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+		Assert.assertEquals("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 			Reform.VbsString(null, "<>&\"\\'"));
 		// Other characters
-		Assert.assertEquals("wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+		Assert.assertEquals("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 			Reform.VbsString(null, "`~!@#$%^&*()_+=-{}|\\][:;'/?><"));
 		// Unicode characters
 		StringBuffer toEncode = new StringBuffer(6000);
@@ -491,7 +491,7 @@ public class ReformTest
 		for (int i = 128; i < 6000; i++)
 		{
 			toEncode.append((char)i);
-			encodedStr.append("&wchr(").append(i).append(')');
+			encodedStr.append("&chrw(").append(i).append(')');
 		}
 		encodedStr.delete(0, 1); // delete &
 		Assert.assertEquals(encodedStr.toString(),
@@ -503,10 +503,10 @@ public class ReformTest
 		Assert.assertEquals("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 			Reform.VbsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.", "default"));
 		// Usual suspects
-		Assert.assertEquals("wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+		Assert.assertEquals("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 			Reform.VbsString("<>&\"\\'", "default"));
 		// Other characters
-		Assert.assertEquals("wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+		Assert.assertEquals("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 			Reform.VbsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"));
 		// Unicode characters
 		toEncode = new StringBuffer(6000);
@@ -514,7 +514,7 @@ public class ReformTest
 		for (int i = 128; i < 6000; i++)
 		{
 			toEncode.append((char)i);
-			encodedStr.append("&wchr(").append(i).append(')');
+			encodedStr.append("&chrw(").append(i).append(')');
 		}
 		encodedStr.delete(0, 1); // delete &
 		Assert.assertEquals(encodedStr.toString(),

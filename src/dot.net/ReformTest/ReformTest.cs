@@ -420,18 +420,18 @@ namespace PhedOrg.Reform.Test
 		[Test]
 		public void VbsString()
 		{
-			Assert.AreEqual("\"abc\"&wchr(60)",
+			Assert.AreEqual("\"abc\"&chrw(60)",
 				Reform.VbsString("abc<"));
-			Assert.AreEqual("wchr(60)&\"abc\"",
+			Assert.AreEqual("chrw(60)&\"abc\"",
 				Reform.VbsString("<abc"));
 			// Non encoded characters
 			Assert.AreEqual("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 				Reform.VbsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."), "Non encoding chars");
 			// Usual suspects
-			Assert.AreEqual("wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+			Assert.AreEqual("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 				Reform.VbsString("<>&\"\\'"), "Usual suspects");
 			// Other characters
-			Assert.AreEqual("wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+			Assert.AreEqual("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 				Reform.VbsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><"), "Punctuation");
 			// Unicode characters
 			StringBuilder toEncode = new StringBuilder(6000);
@@ -439,7 +439,7 @@ namespace PhedOrg.Reform.Test
 			for (uint i = 128; i < 6000; i++)
 			{
 				toEncode.Append((char)i);
-				encodedStr.Append(String.Format("&wchr({0})", (int)i));
+				encodedStr.Append(String.Format("&chrw({0})", (int)i));
 			}
 			encodedStr.Remove(0, 1); // remove &
 
@@ -452,9 +452,9 @@ namespace PhedOrg.Reform.Test
 		{
 			Assert.AreEqual("\"\"", 
 				Reform.VbsString(null, null), "Null for both parameters");
-			Assert.AreEqual("\"abc\"&wchr(60)",
+			Assert.AreEqual("\"abc\"&chrw(60)",
 				Reform.VbsString(null, "abc<"));
-			Assert.AreEqual("wchr(60)&\"abc\"",
+			Assert.AreEqual("chrw(60)&\"abc\"",
 				Reform.VbsString(null, "<abc"));
 			// Usual stuff
 			Assert.AreEqual("\"default\"",
@@ -464,10 +464,10 @@ namespace PhedOrg.Reform.Test
 			Assert.AreEqual("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 				Reform.VbsString(null, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."), "Non encoding chars via default");
 			// Usual suspects
-			Assert.AreEqual("wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+			Assert.AreEqual("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 				Reform.VbsString(null, "<>&\"\\'"), "Usual suspects via default");
 			// Other characters
-			Assert.AreEqual("wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+			Assert.AreEqual("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 				Reform.VbsString(null, "`~!@#$%^&*()_+=-{}|\\][:;'/?><"), "Punctuation via default");
 			// Unicode characters
 			StringBuilder toEncode = new StringBuilder(6000);
@@ -475,7 +475,7 @@ namespace PhedOrg.Reform.Test
 			for (uint i = 128; i < 6000; i++)
 			{
 				toEncode.Append((char)i);
-				encodedStr.Append(String.Format("&wchr({0})", (int)i));
+				encodedStr.Append(String.Format("&chrw({0})", (int)i));
 			}
 			encodedStr.Remove(0, 1); // remove &
 			Assert.AreEqual(encodedStr.ToString(),
@@ -487,10 +487,10 @@ namespace PhedOrg.Reform.Test
 			Assert.AreEqual("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 				Reform.VbsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.", "default"), "Non encoding chars");
 			// Usual suspects
-			Assert.AreEqual("wchr(60)&wchr(62)&wchr(38)&wchr(34)&wchr(92)&wchr(39)",
+			Assert.AreEqual("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 				Reform.VbsString("<>&\"\\'", "default"), "Usual suspects");
 			// Other characters
-			Assert.AreEqual("wchr(96)&wchr(126)&wchr(33)&wchr(64)&wchr(35)&wchr(36)&wchr(37)&wchr(94)&wchr(38)&wchr(42)&wchr(40)&wchr(41)&wchr(95)&wchr(43)&wchr(61)&wchr(45)&wchr(123)&wchr(125)&wchr(124)&wchr(92)&wchr(93)&wchr(91)&wchr(58)&wchr(59)&wchr(39)&wchr(47)&wchr(63)&wchr(62)&wchr(60)",
+			Assert.AreEqual("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 				Reform.VbsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"), "Punctuation");
 			// Unicode characters
 			toEncode = new StringBuilder(6000);
@@ -498,7 +498,7 @@ namespace PhedOrg.Reform.Test
 			for (uint i = 128; i < 6000; i++)
 			{
 				toEncode.Append((char)i);
-				encodedStr.Append(String.Format("&wchr({0})", (int)i));
+				encodedStr.Append(String.Format("&chrw({0})", (int)i));
 			}
 			encodedStr.Remove(0, 1); // remove &
 			Assert.AreEqual(encodedStr.ToString(),
