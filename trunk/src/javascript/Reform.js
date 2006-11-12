@@ -24,7 +24,7 @@
  * Authors:
  *   Michael Eddington (meddington@phed.org)
  *
- * $Id: Reform.js,v 1.2 2006/11/06 06:03:20 meddingt Exp $
+ * $Id$
  */
 
 function HtmlEncode($str, $default)

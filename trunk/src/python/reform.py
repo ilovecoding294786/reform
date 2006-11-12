@@ -25,7 +25,7 @@
 # Authors:
 #   Michael Eddington (meddington@gmail.com)
 
-# $Id: reform.py,v 1.1 2006/11/06 06:03:20 meddingt Exp $
+# $Id$
 
 # Class version really just calls "static" methods below.
 class Reform:
