@@ -251,12 +251,12 @@ sub VbsString
 		{
 			if( $inStr )
 			{
-				$out .= "\"&wchr($c)";
+				$out .= "\"&chrw($c)";
 				$inStr = 0;
 			}
 			else
 			{
-				$out .= "&wchr($c)";
+				$out .= "&chrw($c)";
 			}
 		}
 	}

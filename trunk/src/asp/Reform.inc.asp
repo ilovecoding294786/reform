@@ -25,10 +25,10 @@
 ' Authors:
 '   Michael Eddington (meddington@gmail.com)
 '
-' $Id: Reform.inc.asp,v 1.2 2006/11/06 06:03:19 meddingt Exp $
+' $Id$
 '
 
-class NBKReform
+class OWASPReform
 	
 	function HtmlEncode(str)
 		HtmlEncode = HtmlEncodeEx(str, "")
@@ -42,7 +42,8 @@ class NBKReform
 		
 		if isNull(str) or isEmpty(str) or len(str) = 0 then
 			if isNull(default) or isEmpty(default) or len(default) = 0 then
-				str = ""
+				HtmlEncodeEx = ""
+				exit function
 			else
 				str = default
 			end if
@@ -63,7 +64,7 @@ class NBKReform
 				(c >= 48 and c <= 57 ) or _
 				 c =  32 or  c =  44   or c = 46 then
 				
-				HtmlEncodeEx = HtmlEncodeEx & Chr(c)
+				HtmlEncodeEx = HtmlEncodeEx & Chrw(c)
 				
 			else
 				HtmlEncodeEx = HtmlEncodeEx & "&#" & c & ";"
@@ -85,7 +86,8 @@ class NBKReform
 		
 		if isNull(str) or isEmpty(str) or len(str) = 0 then
 			if isNull(default) or isEmpty(default) or len(default) = 0 then
-				str = ""
+				HtmlAttributeEncodeEx = ""
+				exit function
 			else
 				str = default
 			end if
@@ -94,9 +96,9 @@ class NBKReform
 		' Allow: a-z A-Z 0-9 SPACE , .
 		' Allow (dec): 97-122 65-90 48-57 32 44 46
 		
-		for cnt = 0 to len(str)
+		for cnt = 1 to len(str)
 			
-			c = ascw(mid(str, cnt, 1))
+			c = ascw( mid(str, cnt, 1) )
 			If c < 0 Then
 				c = 65536 + c
 			End If
@@ -105,7 +107,7 @@ class NBKReform
 				(c >= 65 and c <= 90 ) or _
 				(c >= 48 and c <= 57 ) then
 				
-				HtmlAttributeEncodeEx = HtmlAttributeEncodeEx & Chr(c)
+				HtmlAttributeEncodeEx = HtmlAttributeEncodeEx & Chrw(c)
 				
 			else
 				HtmlAttributeEncodeEx = HtmlAttributeEncodeEx & "&#" & c & ";"
@@ -119,7 +121,7 @@ class NBKReform
 	end function
 	
 	function XmlEncodeEx(str, default)
-		XmlEncode = HtmlEncodeEx(str, default)
+		XmlEncodeEx = HtmlEncodeEx(str, default)
 	end function
 	
 	function XmlAttributeEncode(str)
@@ -144,14 +146,10 @@ class NBKReform
 	
 		if isNull(str) or isEmpty(str) or len(str) = 0 then
 			if isNull(default) or isEmpty(default) or len(default) = 0 then
-				str = ""
+				JsStringEx = "''"
+				exit function
 			else
 				str = default
-			end if
-			
-			if isNull(str) or isEmpty(str) or len(str) = 0 then
-				JsStringEx = """"""
-				Exit Function
 			end if
 		end if
 		
@@ -170,7 +168,7 @@ class NBKReform
 				(c >= 48 and c <= 57 ) or _
 				 c =  32 or  c =  44   or c = 46 then
 				
-				JsStringEx = JsStringEx & Chr(c)
+				JsStringEx = JsStringEx & Chrw(c)
 				
 			elseif c <= 127 then
 				h = hex(c)
@@ -182,7 +180,7 @@ class NBKReform
 				JsStringEx = JsStringEx & "\x" & h
 				
 			else
-				h = hex(c, 16)
+				h = hex(c)
 				
 				while len(h) < 4
 					h = "0" & h
@@ -203,14 +201,10 @@ class NBKReform
 	
 		if isNull(str) or isEmpty(str) or len(str) = 0 then
 			if isNull(default) or isEmpty(default) or len(default) = 0 then
-				str = ""
+				VbsStringEx = """"""
+				exit function
 			else
 				str = default
-			end if
-			
-			if isNull(str) or isEmpty(str) or len(str) = 0 then
-				VbsStringEx = """"""
-				Exit Function
 			end if
 		end if
 		
@@ -240,22 +234,23 @@ class NBKReform
 					VbsStringEx = VbsStringEx & "&"""
 				end if
 				
-				VbsStringEx = VbsStringEx & Chr(c)
+				VbsStringEx = VbsStringEx & Chrw(c)
 			else
 				
 				if inStr = 0 then
-					VbsStringEx = VbsStringEx & "&wchr(" & c & ")"
+					VbsStringEx = VbsStringEx & "&chrw(" & c & ")"
 				else
-					VbsStringEx = VbsStringEx & """&wchr(" & c & ")"
+					VbsStringEx = VbsStringEx & """&chrw(" & c & ")"
 					inStr = 0
 				end if
 			end if
 		next
 		
-		if asc(VbsStringEx) = 38 then ' & char
+		if asc(left(VbsStringEx, 1)) = 38 then ' & char
 			VbsStringEx = Right(VbsStringEx, len(VbsStringEx) - 1)		
-			
-		elseif inStr = 1 then
+		end if
+		
+		if inStr = 1 then
 				VbsStringEx = VbsStringEx & """"
 		end if
 		
@@ -264,6 +259,6 @@ class NBKReform
 end class
 
 dim Reform
-set Reform = new NBKReform
+set Reform = new OWASPReform
 
 %>

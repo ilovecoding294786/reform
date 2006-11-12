@@ -205,11 +205,11 @@ function VbsString($str, $default)
 		{
 			if($inStr == 0)
 			{
-				$out += '&wchr(' + $c + ')';
+				$out += '&chrw(' + $c + ')';
 			}
 			else
 			{
-				$out += '"&wchr(' + $c + ')';
+				$out += '"&chrw(' + $c + ')';
 				$inStr = 0;
 			}
 		}

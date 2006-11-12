@@ -265,11 +265,11 @@ class Reform
 			{
 				if(! $inStr)
 				{
-					$out .= sprintf('&wchr(%d)', $c);
+					$out .= sprintf('&chrw(%d)', $c);
 				}
 				else
 				{
-					$out .= sprintf('"&wchr(%d)', $c);
+					$out .= sprintf('"&chrw(%d)', $c);
 					$inStr = false;
 				}
 			}
