@@ -30,9 +30,9 @@
 using System;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using PhedOrg.Reform;
+using Owasp.Reform;
 
-namespace PhedOrg.Reform.WebControls
+namespace Owasp.Reform.WebControls
 {
 	public class ReformLabel : Label
 	{
