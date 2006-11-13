@@ -23,28 +23,44 @@
  * SOFTWARE. 
  * 
  * Authors:
- *   Michael Eddington (meddington@gmail.com)
+ *   Michael Eddington (meddington@phed.org)
  *
  * $Id$
  */
 
 class Reform
 {
-	// mb_internal_encoding();
+	static $haveUnicode = false;
+	
 	function unichr($u)
 	{
-		return mb_convert_encoding(pack("N",$u), mb_internal_encoding(), 'UCS-4BE');
+		if(Reform::$haveUnicode == true)
+		{
+			return mb_convert_encoding(pack("N",$u), 'UTF-8', 'UCS-4BE');
+		}
+		
+		return chr($u);
 	}
 	
 	function uniord($u)
 	{
-		$c = unpack("N", mb_convert_encoding($u, 'UCS-4BE', mb_internal_encoding()));
-		return $c[1];
+		if(Reform::$haveUnicode == true)
+		{
+			$c = unpack("N", mb_convert_encoding($u, 'UCS-4BE', 'UTF-8'));
+			return $c[1];
+		}
+		
+		return ord($u);
 	}
 	
 	function unicharat($str, $cnt)
 	{
-		return mb_substr($str, $cnt, 1);
+		if(Reform::$haveUnicode == true)
+		{
+			return mb_substr($str, $cnt, 1);
+		}
+		
+		return substr($str, $cnt, 1);
 	}
 	
 	function HtmlEncode($str, $default = '')
@@ -217,7 +233,7 @@ class Reform
 			}
 			else
 			{
-				$out .= sprintf('\u04X', $c);
+				$out .= sprintf('\u%04X', $c);
 			}
 		}
 		
@@ -278,6 +294,24 @@ class Reform
 		return ltrim($out, '&') . ($inStr ? '"' : '');
 	}
 }
+
+Reform::$haveUnicode = false;
+if(function_exists('mb_convert_encoding'))
+{
+	if(mb_internal_encoding() == "UTF-8")
+	{
+		Reform::$haveUnicode = true;
+	}
+	else
+	{
+		trigger_error("Reform requires UTF-8 internal encoding, disabling unicode support", E_USER_WARNING);
+	}
+}
+else
+{
+	trigger_error("Reform unicode support requires multibute string module, disabling unicode support", E_USER_WARNING);
+}
+
 
 // end
 ?>
