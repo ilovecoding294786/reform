@@ -25,13 +25,14 @@
 # Authors:
 #   Michael Eddington (meddington@phed.org)
 
-# $Id: Reform.pm,v 1.1 2006/11/06 05:24:48 meddingt Exp $
+# $Id$
 
-package PhedOrg::Reform;
+package Owasp::Reform;
 
+use utf8;
 use strict;
 use warnings;
-use bytes;
+#use bytes;
 
 sub HtmlEncode
 {
