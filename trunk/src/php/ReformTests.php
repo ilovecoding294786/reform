@@ -22,7 +22,7 @@
  * SOFTWARE. 
  * 
  * Authors:
- *   Michael Eddington (meddington@gmail.com)
+ *   Michael Eddington (meddington@phed.org)
  *
  * $Id$
  */
@@ -34,7 +34,18 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 {
 	function unichr($u)
 	{
-		return mb_convert_encoding(pack("N",$u), mb_internal_encoding(), 'UCS-4BE');
+		return mb_convert_encoding(pack("N",$u), 'UTF-8', 'UCS-4BE');
+	}
+	
+	function uniord($u)
+	{
+		$c = unpack("N", mb_convert_encoding($u, 'UCS-4BE', 'UTF-8'));
+		return $c[1];
+	}
+	
+	function unicharat($str, $cnt)
+	{
+		return mb_substr($str, $cnt, 1);
 	}
 
 	public function HtmlEncode()
@@ -344,20 +355,23 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 		// Unicode characters
 		$toEncode = "";
 		$encodedStr = "";
-		$encodedStr .= '\'';
+		$encodedStr .= "'";
 		for ($i = 128; $i < 6000; $i++)
 		{
 			$toEncode .= ReformTests::unichr($i);
 			$encodedStr .= sprintf("\\u%04X", $i);
+			
+			$this->assertEquals(sprintf("'\\u%04X'", $i),
+				Reform::JsString(ReformTests::unichr($i)), "Unicode characters to 6000 [$i]");
 		}
-		$encodedStr .= '\'';
+		$encodedStr .= "'";
 		$this->assertEquals($encodedStr,
 			Reform::JsString($toEncode), "Unicode characters to 6000");
 	}
 
 	public function testJsStringDefault()
 	{
-		$this->assertEquals("\'\'",
+		$this->assertEquals("''",
 			Reform::JsString(null, null), "Null for both parameters");
 		// Usual stuff
 		$this->assertEquals("'default'",
@@ -412,18 +426,18 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 
 	public function testVbsString()
 	{
-		$this->assertEquals("\"abc\"&wReformTests::unichr(60)",
+		$this->assertEquals("\"abc\"&chrw(60)",
 			Reform::VbsString("abc<"));
-		$this->assertEquals("wReformTests::unichr(60)&\"abc\"",
+		$this->assertEquals("chrw(60)&\"abc\"",
 			Reform::VbsString("<abc"));
 		// Non encoded characters
 		$this->assertEquals("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 			Reform::VbsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."), "Non encoding chars");
 		// Usual suspects
-		$this->assertEquals("wReformTests::unichr(60)&wReformTests::unichr(62)&wReformTests::unichr(38)&wReformTests::unichr(34)&wReformTests::unichr(92)&wReformTests::unichr(39)",
+		$this->assertEquals("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 			Reform::VbsString("<>&\"\\'"), "Usual suspects");
 		// Other characters
-		$this->assertEquals("wReformTests::unichr(96)&wReformTests::unichr(126)&wReformTests::unichr(33)&wReformTests::unichr(64)&wReformTests::unichr(35)&wReformTests::unichr(36)&wReformTests::unichr(37)&wReformTests::unichr(94)&wReformTests::unichr(38)&wReformTests::unichr(42)&wReformTests::unichr(40)&wReformTests::unichr(41)&wReformTests::unichr(95)&wReformTests::unichr(43)&wReformTests::unichr(61)&wReformTests::unichr(45)&wReformTests::unichr(123)&wReformTests::unichr(125)&wReformTests::unichr(124)&wReformTests::unichr(92)&wReformTests::unichr(93)&wReformTests::unichr(91)&wReformTests::unichr(58)&wReformTests::unichr(59)&wReformTests::unichr(39)&wReformTests::unichr(47)&wReformTests::unichr(63)&wReformTests::unichr(62)&wReformTests::unichr(60)",
+		$this->assertEquals("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 			Reform::VbsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><"), "Punctuation");
 		// Unicode characters
 		$toEncode = "";
@@ -431,9 +445,10 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 		for ($i = 128; $i < 6000; $i++)
 		{
 			$toEncode .= ReformTests::unichr($i);
-			$encodedStr .= sprintf("&wReformTests::unichr(%d)", $i);
+			$encodedStr .= sprintf("&chrw(%d)", $i);
 		}
-		$$encodedStr = ltrim($encodedStr, '&'); // remove &
+		
+		$encodedStr = ltrim($encodedStr, '&'); // remove &
 
 		$this->assertEquals($encodedStr,
 			Reform::VbsString($toEncode), "Unicode characters to 6000");
@@ -443,9 +458,9 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 	{
 		$this->assertEquals("\"\"", 
 			Reform::VbsString(null, null), "Null for both parameters");
-		$this->assertEquals("\"abc\"&wReformTests::unichr(60)",
+		$this->assertEquals("\"abc\"&chrw(60)",
 			Reform::VbsString(null, "abc<"));
-		$this->assertEquals("wReformTests::unichr(60)&\"abc\"",
+		$this->assertEquals("chrw(60)&\"abc\"",
 			Reform::VbsString(null, "<abc"));
 		// Usual stuff
 		$this->assertEquals("\"default\"",
@@ -455,10 +470,10 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 		$this->assertEquals("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 			Reform::VbsString(null, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,."), "Non encoding chars via default");
 		// Usual suspects
-		$this->assertEquals("wReformTests::unichr(60)&wReformTests::unichr(62)&wReformTests::unichr(38)&wReformTests::unichr(34)&wReformTests::unichr(92)&wReformTests::unichr(39)",
+		$this->assertEquals("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 			Reform::VbsString(null, "<>&\"\\'"), "Usual suspects via default");
 		// Other characters
-		$this->assertEquals("wReformTests::unichr(96)&wReformTests::unichr(126)&wReformTests::unichr(33)&wReformTests::unichr(64)&wReformTests::unichr(35)&wReformTests::unichr(36)&wReformTests::unichr(37)&wReformTests::unichr(94)&wReformTests::unichr(38)&wReformTests::unichr(42)&wReformTests::unichr(40)&wReformTests::unichr(41)&wReformTests::unichr(95)&wReformTests::unichr(43)&wReformTests::unichr(61)&wReformTests::unichr(45)&wReformTests::unichr(123)&wReformTests::unichr(125)&wReformTests::unichr(124)&wReformTests::unichr(92)&wReformTests::unichr(93)&wReformTests::unichr(91)&wReformTests::unichr(58)&wReformTests::unichr(59)&wReformTests::unichr(39)&wReformTests::unichr(47)&wReformTests::unichr(63)&wReformTests::unichr(62)&wReformTests::unichr(60)",
+		$this->assertEquals("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 			Reform::VbsString(null, "`~!@#$%^&*()_+=-{}|\\][:;'/?><"), "Punctuation via default");
 		// Unicode characters
 		$toEncode = "";
@@ -466,7 +481,7 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 		for ($i = 128; $i < 6000; $i++)
 		{
 			$toEncode .= ReformTests::unichr($i);
-			$encodedStr .= sprintf("&wReformTests::unichr(%d)", $i);
+			$encodedStr .= sprintf("&chrw(%d)", $i);
 		}
 		$encodedStr = ltrim($encodedStr, '&'); // remove &
 		
@@ -479,10 +494,10 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 		$this->assertEquals("\"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.\"",
 			Reform::VbsString("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0987654321 ,.", "default"), "Non encoding chars");
 		// Usual suspects
-		$this->assertEquals("wReformTests::unichr(60)&wReformTests::unichr(62)&wReformTests::unichr(38)&wReformTests::unichr(34)&wReformTests::unichr(92)&wReformTests::unichr(39)",
+		$this->assertEquals("chrw(60)&chrw(62)&chrw(38)&chrw(34)&chrw(92)&chrw(39)",
 			Reform::VbsString("<>&\"\\'", "default"), "Usual suspects");
 		// Other characters
-		$this->assertEquals("wReformTests::unichr(96)&wReformTests::unichr(126)&wReformTests::unichr(33)&wReformTests::unichr(64)&wReformTests::unichr(35)&wReformTests::unichr(36)&wReformTests::unichr(37)&wReformTests::unichr(94)&wReformTests::unichr(38)&wReformTests::unichr(42)&wReformTests::unichr(40)&wReformTests::unichr(41)&wReformTests::unichr(95)&wReformTests::unichr(43)&wReformTests::unichr(61)&wReformTests::unichr(45)&wReformTests::unichr(123)&wReformTests::unichr(125)&wReformTests::unichr(124)&wReformTests::unichr(92)&wReformTests::unichr(93)&wReformTests::unichr(91)&wReformTests::unichr(58)&wReformTests::unichr(59)&wReformTests::unichr(39)&wReformTests::unichr(47)&wReformTests::unichr(63)&wReformTests::unichr(62)&wReformTests::unichr(60)",
+		$this->assertEquals("chrw(96)&chrw(126)&chrw(33)&chrw(64)&chrw(35)&chrw(36)&chrw(37)&chrw(94)&chrw(38)&chrw(42)&chrw(40)&chrw(41)&chrw(95)&chrw(43)&chrw(61)&chrw(45)&chrw(123)&chrw(125)&chrw(124)&chrw(92)&chrw(93)&chrw(91)&chrw(58)&chrw(59)&chrw(39)&chrw(47)&chrw(63)&chrw(62)&chrw(60)",
 			Reform::VbsString("`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"), "Punctuation");
 		// Unicode characters
 		$toEncode = "";
@@ -490,7 +505,7 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 		for ($i = 128; $i < 6000; $i++)
 		{
 			$toEncode .= ReformTests::unichr($i);
-			$encodedStr .= sprintf("&wReformTests::unichr(%d)", $i);
+			$encodedStr .= sprintf("&chrw(%d)", $i);
 		}
 		$encodedStr = ltrim($encodedStr, '&'); // remove &
 		$this->assertEquals($encodedStr,
