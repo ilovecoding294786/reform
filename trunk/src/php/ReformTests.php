@@ -110,8 +110,8 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 		$this->assertEquals("&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
 			Reform::HtmlEncode("`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"), "Punctuation");
 		// Unicode characters
-		$$toEncode = "";
-		$$encodedStr = "";
+		$toEncode = "";
+		$encodedStr = "";
 		for ($i = 127; $i < 6000; $i++)
 		{
 			$toEncode .= ReformTests::unichr($i);
@@ -182,8 +182,8 @@ class ReformTests extends PHPUnit2_Framework_TestCase
 		$this->assertEquals("&#32;&#44;&#46;&#96;&#126;&#33;&#64;&#35;&#36;&#37;&#94;&#38;&#42;&#40;&#41;&#95;&#43;&#61;&#45;&#123;&#125;&#124;&#92;&#93;&#91;&#58;&#59;&#39;&#47;&#63;&#62;&#60;",
 			Reform::HtmlAttributeEncode(" ,.`~!@#$%^&*()_+=-{}|\\][:;'/?><", "default"), "Punctuation");
 		// Unicode characters
-		$$toEncode = "";
-		$$encodedStr = "";
+		$toEncode = "";
+		$encodedStr = "";
 		for ($i = 127; $i < 6000; $i++)
 		{
 			$toEncode .= ReformTests::unichr($i);
