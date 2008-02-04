@@ -1,6 +1,5 @@
-
 #
-# Copyright (c) 2006 Michael Eddington
+# Copyright (c) 2008 Adam Cecchetti 
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy 
 # of this software and associated documentation files (the "Software"), to deal
@@ -20,130 +19,167 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 #
-
+#
 # Authors:
-#   Michael Eddington (meddington@gmail.com)
-
+#		Adam Cecchetti (adam@cecchetti.com)
+#
 # $Id$
+
 
 class Reform
 
-def HtmlEncode(str, default='')
+def self.HtmlEncode( str, default='' )
 	
-	if str == None or len(str) == 0
-		str = default
-		end
+	if( str == nil or str.length == 0 )  
+		str = default 
+	end
+
+	if (str == nil || str.length == 0 )
+		return nil 
+	end 
+	
 	
 	# Allow: a-z A-Z 0-9 SPACE , .
 	# Allow (dec): 97-122 65-90 48-57 32 44 46
 	
 	out = ''
-	for char in str
-		c = ord(char)
-		if ((c >= 97 and c <= 122) or
-			(c >= 65 and c <= 90 ) or
-			(c >= 48 and c <= 57 ) or
-			c == 32 or c == 44 or c == 46)
-			out += char
+	
+	str.unpack("U*").each { |c|
+		if( (c >= 97 and c <= 122) or
+				(c >= 65 and c <= 90 ) or
+				(c >= 48 and c <= 57 ) or
+				 c == 32 or  c == 44   or  
+				 c == 46  )
+			out += c.chr
 		else
 			out += "&#%d;" % c
 		end
-	end
-		
+	}
+
 	return out
-end
-		
-def HtmlAttributeEncode(str, default=''):
+end # END HtmlEncode 
 	
-	if str == None or len(str) == 0:
+
+def Reform.HtmlAttributeEncode(str, default='')
+	
+	if (str == nil || str.length == 0)
 		str = default
-	
+	end 	
+
+	if (str == nil || str.length == 0)
+		return nil 	
+	end 
 	# Allow: a-z A-Z 0-9
 	# Allow (dec): 97-122 65-90 48-57
-	
-	out = '';
-	for char in str:
-		c = ord(char);
-		if ((c >= 97 and c <= 122) or
-			(c >= 65 and c <= 90 ) or
-			(c >= 48 and c <= 57 )):
-			out += char
-		else:
+
+	out = ''
+	str.unpack("U*").each { |c| 	
+
+		if((c >= 97 and c <= 122) or
+			 (c >= 65 and c <= 90 ) or
+			 (c >= 48 and c <= 57 ) )
+			out += c.chr
+		else
 			out += "&#%d;" % c
-	
+		end
+	}
+
 	return out
+end # END HtmlAttributeEncode  
 
-def XmlEncode(str, default=''):
+def Reform.XmlEncode(str, default='')
 	return HtmlEncode(str, default)
+end # END XmlEncode 
 
-def XmlAttributeEncode(str, default=''):
+def Reform.XmlAttributeEncode(str, default='')
 	return HtmlAttributeEncode(str, default)
+end # END XmlAttributeEncode
 
-def JsString(str, default=''):
+def Reform.JsString( str, default='' )
 	
-	if str == None or len(str) == 0:
+	if( str == nil or str.length == 0 ) 
 		str = default
+	end
 		
-		if str == None or len(str) == 0:
+	if( str == nil or str.length == 0 )
 			return "''"
+	end 
 	
 	# Allow: a-z A-Z 0-9 SPACE , .
 	# Allow (dec): 97-122 65-90 48-57 32 44 46
 	
 	out = '';
-	for char in str:
-		c = ord(char);
-		if ((c >= 97 and c <= 122) or
-			(c >= 65 and c <= 90 ) or
-			(c >= 48 and c <= 57 ) or
-			c == 32 or c == 44 or c == 46):
-			out += char
-		elif c <= 127:
-			out += "\\x%2x;" % c
-		else:
-			out += "\\u%4x;" % c
-	
+	str.unpack("U*").each { |c| 
+
+		if( (c >= 97 and c <= 122) or
+				(c >= 65 and c <= 90 ) or
+				(c >= 48 and c <= 57 ) or
+				 c == 32 or  c == 44   or
+				 c == 46 )
+
+			out += c.chr
+		elsif( c <= 127 )
+			out += "\\x%02X" % c
+		else
+			out += "\\u%04X" % c
+		end 
+	} 
+
 	return "'%s'" % out
 
-def VbsString(str, default=''):
+end # END JsString 
+
+def Reform.VbsString( str, default='' )
 	
-	if str == None or len(str) == 0:
+	if( str == nil or str.length == 0 ) 
 		str = default
+	end
 		
-		if str == None or len(str) == 0:
-			return '""'
-	
+	if( str == nil or str.length == 0 ) 
+		return '""'
+	end	
+
 	# Allow: a-z A-Z 0-9 SPACE , .
 	# Allow (dec): 97-122 65-90 48-57 32 44 46
 		
-	out = '';
-	inStr = 0;	# Boolean (0 false, 1 true)
+	out = ''
+	inStr = 0	
+				# Boolean (0 false, 1 true)
 				# Using numerical for backwards
 				# compatability
 		
-	for char in str:
-		c = ord(char);
-		if ((c >= 97 and c <= 122) or
-			(c >= 65 and c <= 90 ) or
-			(c >= 48 and c <= 57 ) or
-			c == 32 or c == 44 or c == 46):
+	str.unpack("U*").each { |c| 	
+
+		if( (c >= 97 and c <= 122) or
+				(c >= 65 and c <= 90 ) or
+				(c >= 48 and c <= 57 ) or
+				 c == 32 or c == 44 or 
+				 c == 46 )
 			
-			if inStr == 0:
+			if( inStr == 0 )
 				inStr = 1
 				out += '&"'
-			
-			out += char
-		else:
-			if inStr == 0:
+			end
+
+			out += c.chr
+
+		else
+			if( inStr == 0 ) 
 				out += "&chrw(%d)" % c
-			else:
+			else
 				inStr = 0
 				out += "\"&chrw(%d)" % c
-		
-	if inStr == 1:
+			end
+		end
+	}
+
+	if ( inStr == 1 ) 
 		out += '"'
-		
-	return out.lstrip('&')
-end
+	end
+
+	return out.sub('&','')
+end # END VbsString
 	
-# end
+end # END Reform 
+
+
