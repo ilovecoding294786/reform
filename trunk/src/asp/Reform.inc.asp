@@ -93,8 +93,8 @@ class OWASPReform
 			end if
 		end if
 		
-		' Allow: a-z A-Z 0-9 SPACE , .
-		' Allow (dec): 97-122 65-90 48-57 32 44 46
+		' Allow: a-z A-Z 0-9
+		' Allow (dec): 97-122 65-90 48-57
 		
 		for cnt = 1 to len(str)
 			
