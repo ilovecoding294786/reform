@@ -1,0 +1,14 @@
+
+Changes by revision
+-------------------
+
+1.0 (from 0.12)
+===============
+
+ - Added Ruby support
+ - Added .NET 3.0 project
+ - Updated .NET assembly name from NBK. to Owasp.
+ - Updated comments in ASP version to reflect code
+
+
+[end]
